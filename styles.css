@@ -689,3 +689,437 @@ li:hover::after {
     border: 1px solid #ccc !important;
   }
 }
+
+/* ========== ENHANCED CYBER ANIMATIONS ========== */
+
+/* Glitch text effect for special elements */
+.glitch-text {
+  position: relative;
+  color: var(--neon);
+  font-family: 'Orbitron', monospace;
+  animation: glitch 2s infinite;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  animation: glitch-1 0.5s infinite;
+  color: var(--danger);
+  z-index: -1;
+}
+
+.glitch-text::after {
+  animation: glitch-2 0.5s infinite;
+  color: var(--accent);
+  z-index: -2;
+}
+
+@keyframes glitch {
+  0%, 74%, 76%, 100% {
+    transform: translate(0);
+  }
+  75% {
+    transform: translate(-2px, 2px);
+  }
+}
+
+@keyframes glitch-1 {
+  0%, 74%, 76%, 100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+  75% {
+    transform: translate(2px, -2px);
+    opacity: 0.8;
+  }
+}
+
+@keyframes glitch-2 {
+  0%, 74%, 76%, 100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+  75% {
+    transform: translate(-2px, -2px);
+    opacity: 0.8;
+  }
+}
+
+/* Energy wave effect */
+.energy-wave {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.energy-wave::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  width: 200%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--neon) 25%, 
+    var(--pink) 50%, 
+    var(--accent) 75%, 
+    transparent 100%);
+  animation: energyFlow 8s linear infinite;
+  box-shadow: 
+    0 0 10px var(--neon),
+    0 0 20px var(--pink),
+    0 0 30px var(--accent);
+}
+
+@keyframes energyFlow {
+  0% {
+    left: -100%;
+    transform: translateY(-50%) scaleX(0);
+  }
+  10% {
+    transform: translateY(-50%) scaleX(1);
+  }
+  90% {
+    transform: translateY(-50%) scaleX(1);
+  }
+  100% {
+    left: 100%;
+    transform: translateY(-50%) scaleX(0);
+  }
+}
+
+/* Holographic scan lines */
+.scan-lines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 255, 255, 0.03) 2px,
+    rgba(0, 255, 255, 0.03) 4px
+  );
+  animation: scanMove 0.1s linear infinite;
+}
+
+@keyframes scanMove {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(4px); }
+}
+
+/* Floating data fragments */
+.data-fragments {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.data-fragment {
+  position: absolute;
+  color: var(--neon);
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  opacity: 0.3;
+  animation: fragmentFloat 15s linear infinite;
+}
+
+.data-fragment:nth-child(1) { animation-delay: 0s; }
+.data-fragment:nth-child(2) { animation-delay: -3s; }
+.data-fragment:nth-child(3) { animation-delay: -6s; }
+.data-fragment:nth-child(4) { animation-delay: -9s; }
+.data-fragment:nth-child(5) { animation-delay: -12s; }
+
+@keyframes fragmentFloat {
+  0% {
+    transform: translateY(100vh) translateX(0px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-100px) translateX(100px) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+/* Electromagnetic pulse effect */
+.emp-pulse {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: var(--neon);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 10;
+  animation: empExpand 6s ease-out infinite;
+}
+
+@keyframes empExpand {
+  0% {
+    width: 4px;
+    height: 4px;
+    opacity: 1;
+    box-shadow: 
+      0 0 0 0 rgba(0, 255, 255, 0.6),
+      0 0 0 0 rgba(255, 0, 107, 0.4),
+      0 0 0 0 rgba(108, 92, 231, 0.3);
+  }
+  50% {
+    width: 4px;
+    height: 4px;
+    opacity: 0.8;
+    box-shadow: 
+      0 0 0 200px rgba(0, 255, 255, 0),
+      0 0 0 400px rgba(255, 0, 107, 0),
+      0 0 0 600px rgba(108, 92, 231, 0);
+  }
+  100% {
+    width: 4px;
+    height: 4px;
+    opacity: 0;
+    box-shadow: 
+      0 0 0 200px rgba(0, 255, 255, 0),
+      0 0 0 400px rgba(255, 0, 107, 0),
+      0 0 0 600px rgba(108, 92, 231, 0);
+  }
+}
+
+/* Enhanced mouse interaction */
+.interactive-element {
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+  overflow: hidden;
+}
+
+.interactive-element::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, var(--neon) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.6s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.interactive-element:hover::after {
+  width: 200%;
+  height: 200%;
+  opacity: 0.1;
+}
+
+/* Cyber grid overlay */
+.cyber-grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(255, 0, 107, 0.1) 0%, transparent 50%),
+    linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.02) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.02) 75%, rgba(255, 255, 255, 0.02) 76%, transparent 77%),
+    linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.02) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.02) 75%, rgba(255, 255, 255, 0.02) 76%, transparent 77%);
+  background-size: 100px 100px, 150px 150px, 50px 50px, 50px 50px;
+  animation: gridShift 20s linear infinite;
+}
+
+@keyframes gridShift {
+  0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+  100% { background-position: 100% 100%, -100% -100%, 50px 50px, 50px 50px; }
+}
+
+/* Quantum particle effect */
+.quantum-particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--neon);
+  border-radius: 50%;
+  animation: quantumMove 8s linear infinite;
+  box-shadow: 0 0 6px var(--neon);
+}
+
+@keyframes quantumMove {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  25% {
+    transform: translate(200px, -100px) scale(1.5);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-150px, 200px) scale(0.5);
+    opacity: 0.6;
+  }
+  75% {
+    transform: translate(300px, 50px) scale(1.2);
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translate(-100px, -200px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* Neural network connections */
+.neural-network {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.neural-node {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: neuralPulse 4s ease-in-out infinite;
+  box-shadow: 
+    0 0 10px var(--accent),
+    0 0 20px var(--accent),
+    0 0 30px var(--accent);
+}
+
+.neural-node:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+.neural-node:nth-child(2) { top: 40%; left: 80%; animation-delay: 1s; }
+.neural-node:nth-child(3) { top: 70%; left: 30%; animation-delay: 2s; }
+.neural-node:nth-child(4) { top: 15%; left: 60%; animation-delay: 3s; }
+
+@keyframes neuralPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 1;
+  }
+}
+
+/* Data stream visualization */
+.data-stream-visual {
+  position: relative;
+  height: 200px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.stream-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon), transparent);
+  animation: streamFlow 3s linear infinite;
+  width: 100%;
+}
+
+.stream-line:nth-child(1) { top: 20%; animation-delay: 0s; }
+.stream-line:nth-child(2) { top: 40%; animation-delay: 0.5s; }
+.stream-line:nth-child(3) { top: 60%; animation-delay: 1s; }
+.stream-line:nth-child(4) { top: 80%; animation-delay: 1.5s; }
+
+@keyframes streamFlow {
+  0% { transform: translateX(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+/* Apply interactive effects to elements */
+nav a,
+section,
+li,
+.dashboard-card {
+  /* Add interactive class automatically */
+}
+
+/* Add quantum particles to specific elements */
+header::after {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 2px;
+  height: 2px;
+  background: var(--pink);
+  border-radius: 50%;
+  animation: quantumMove 12s linear infinite;
+  box-shadow: 0 0 8px var(--pink);
+}
+
+/* Performance optimizations for low-end devices */
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .energy-wave,
+  .scan-lines,
+  .data-fragments,
+  .emp-pulse,
+  .cyber-grid,
+  .neural-network {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch-text,
+  .energy-wave,
+  .scan-lines,
+  .data-fragments,
+  .emp-pulse,
+  .cyber-grid,
+  .quantum-particle,
+  .neural-network,
+  .stream-line {
+    animation: none !important;
+  }
+}
