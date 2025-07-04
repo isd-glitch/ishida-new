@@ -370,6 +370,9 @@ class SiteManager {
     if (!this.optimizer.isLowPowerMode) {
       this.initColorShift();
       this.initAmbientEffects();
+      this.initInteractiveEffects();
+      this.synchronizeNeuralNetwork();
+      this.initGlitchEffect();
     }
     
     // Clean up on page unload
@@ -491,6 +494,88 @@ class SiteManager {
     if (this.optimizer.rafId) {
       cancelAnimationFrame(this.optimizer.rafId);
     }
+  }
+
+  // Enhanced interactive effects
+  initInteractiveEffects() {
+    const interactiveElements = document.querySelectorAll('nav a, section, li, .dashboard-card');
+    
+    interactiveElements.forEach(element => {
+      element.classList.add('interactive-element');
+      
+      // Add holographic distortion on hover
+      element.addEventListener('mouseenter', (e) => {
+        if (!this.optimizer.isLowPowerMode) {
+          this.createHolographicBurst(e.target);
+        }
+      });
+      
+      // Add quantum particle burst on click
+      element.addEventListener('click', (e) => {
+        if (!this.optimizer.isLowPowerMode) {
+          this.createQuantumBurst(e.clientX, e.clientY);
+        }
+      });
+    });
+  }
+  
+  createHolographicBurst(element) {
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    for (let i = 0; i < 8; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'quantum-particle';
+      particle.style.left = centerX + 'px';
+      particle.style.top = centerY + 'px';
+      particle.style.animationDelay = (i * 0.1) + 's';
+      document.body.appendChild(particle);
+      
+      setTimeout(() => particle.remove(), 8000);
+    }
+  }
+  
+  createQuantumBurst(x, y) {
+    for (let i = 0; i < 12; i++) {
+      const fragment = document.createElement('div');
+      fragment.className = 'data-fragment';
+      fragment.textContent = ['QUANTUM', 'BURST', 'LINK', 'NODE', 'CYBER'][Math.floor(Math.random() * 5)];
+      fragment.style.left = x + 'px';
+      fragment.style.top = y + 'px';
+      fragment.style.animationDelay = (i * 0.05) + 's';
+      document.body.appendChild(fragment);
+      
+      setTimeout(() => fragment.remove(), 15000);
+    }
+  }
+  
+  // Neural network pulse synchronization
+  synchronizeNeuralNetwork() {
+    const nodes = document.querySelectorAll('.neural-node');
+    let currentIndex = 0;
+    
+    setInterval(() => {
+      nodes.forEach((node, index) => {
+        node.style.animationDelay = (index === currentIndex ? '0s' : '0.5s');
+      });
+      currentIndex = (currentIndex + 1) % nodes.length;
+    }, 2000);
+  }
+  
+  // Enhanced glitch effect
+  initGlitchEffect() {
+    const glitchElements = document.querySelectorAll('.glitch-text');
+    
+    glitchElements.forEach(element => {
+      setInterval(() => {
+        if (Math.random() < 0.1) { // 10% chance
+          element.style.animation = 'none';
+          element.offsetHeight; // Trigger reflow
+          element.style.animation = 'glitch 0.5s ease-in-out';
+        }
+      }, 3000);
+    });
   }
 }
 
