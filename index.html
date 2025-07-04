@@ -42,6 +42,7 @@
       min-height: 100vh;
       font-weight: 300;
       line-height: 1.7;
+      cursor: none; /* Hide default cursor for custom cursor */
     }
     
     .loading {
@@ -63,18 +64,50 @@
       opacity: 0;
       pointer-events: none;
     }
+
+    /* Custom cursor */
+    .cursor {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--neon);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transition: all 0.1s ease;
+    }
+
+    .cursor-dot {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: var(--neon);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transition: all 0.05s ease;
+    }
   </style>
   
   <!-- Load main stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- Custom cursor -->
+  <div class="cursor"></div>
+  <div class="cursor-dot"></div>
+
+  <!-- Enhanced loading screen -->
   <div class="loading" id="loading">
     <div class="loading-text">システム起動中...</div>
     <div class="cyber-spinner"></div>
+    <div class="loading-progress">
+      <div class="progress-bar"></div>
+    </div>
   </div>
 
-  <!-- Background elements - will be enhanced by JS -->
+  <!-- Enhanced background elements -->
   <div class="grid-bg"></div>
   <div class="holo-orbs">
     <div class="holo-orb"></div>
@@ -82,57 +115,186 @@
     <div class="holo-orb"></div>
   </div>
 
-  <!-- Canvas for particles - defer creation to reduce initial load -->
+  <!-- New floating elements -->
+  <div class="floating-elements">
+    <div class="float-element" data-speed="2">◇</div>
+    <div class="float-element" data-speed="3">◆</div>
+    <div class="float-element" data-speed="1.5">▲</div>
+    <div class="float-element" data-speed="2.5">●</div>
+    <div class="float-element" data-speed="1.8">■</div>
+  </div>
+
+  <!-- Enhanced particle canvas -->
   <canvas id="particle-canvas" style="display: none;"></canvas>
 
+  <!-- Enhanced navigation with hover effects -->
   <nav>
-    <a href="#schedule"><span>⚡ 時間割</span></a>
-    <a href="#calendar"><span>🚀 予定表</span></a>
-    <a href="#news"><span>💫 お知らせ</span></a>
+    <a href="#schedule" class="nav-item" data-text="時間割">
+      <span class="nav-text">⚡ 時間割</span>
+      <span class="nav-bg"></span>
+    </a>
+    <a href="#calendar" class="nav-item" data-text="予定表">
+      <span class="nav-text">🚀 予定表</span>
+      <span class="nav-bg"></span>
+    </a>
+    <a href="#news" class="nav-item" data-text="お知らせ">
+      <span class="nav-text">💫 お知らせ</span>
+      <span class="nav-bg"></span>
+    </a>
   </nav>
 
+  <!-- Enhanced header with morphing text -->
   <header>
-    <h1>石田中学校 2年3組</h1>
-    <p>CYBER CLASSROOM 2025</p>
+    <h1>
+      <span class="morphing-text" data-texts="石田中学校 2年3組,ISHIDA MIDDLE SCHOOL,サイバークラス 2025,CYBER CLASSROOM">石田中学校 2年3組</span>
+    </h1>
+    <p class="subtitle-animated">CYBER CLASSROOM 2025</p>
+    
+    <!-- New stats display -->
+    <div class="stats-container">
+      <div class="stat-item" data-target="24">
+        <span class="stat-number">0</span>
+        <span class="stat-label">生徒数</span>
+      </div>
+      <div class="stat-item" data-target="6">
+        <span class="stat-number">0</span>
+        <span class="stat-label">授業数/日</span>
+      </div>
+      <div class="stat-item" data-target="100">
+        <span class="stat-number">0</span>
+        <span class="stat-label">システム稼働率%</span>
+      </div>
+    </div>
   </header>
 
   <div class="container">
-    <section id="schedule">
-      <h2>⚡ 時間割システム</h2>
-      <div class="table-container">
+    <!-- Enhanced sections with new animations -->
+    <section id="schedule" class="enhanced-section">
+      <div class="section-header">
+        <h2 class="typing-animation">⚡ 時間割システム</h2>
+        <div class="section-decoration">
+          <div class="decoration-line"></div>
+          <div class="decoration-dot"></div>
+        </div>
+      </div>
+      
+      <div class="table-container enhanced-table">
+        <div class="table-glow"></div>
         <table>
           <tr>
             <th>DAY</th><th>Period 1</th><th>Period 2</th><th>Period 3</th><th>Period 4</th><th>Period 5</th><th>Period 6</th>
           </tr>
-          <tr><td>月曜</td><td>国語</td><td>数学</td><td>英語</td><td>理科</td><td>社会</td><td>体育</td></tr>
-          <tr><td>火曜</td><td>数学</td><td>英語</td><td>国語</td><td>音楽</td><td>美術</td><td>技術</td></tr>
-          <tr><td>水曜</td><td>理科</td><td>社会</td><td>英語</td><td>数学</td><td>国語</td><td>体育</td></tr>
-          <tr><td>木曜</td><td>英語</td><td>数学</td><td>理科</td><td>技術</td><td>美術</td><td>社会</td></tr>
-          <tr><td>金曜</td><td>体育</td><td>英語</td><td>数学</td><td>国語</td><td>理科</td><td>総合</td></tr>
+          <tr class="hover-row"><td>月曜</td><td>国語</td><td>数学</td><td>英語</td><td>理科</td><td>社会</td><td>体育</td></tr>
+          <tr class="hover-row"><td>火曜</td><td>数学</td><td>英語</td><td>国語</td><td>音楽</td><td>美術</td><td>技術</td></tr>
+          <tr class="hover-row"><td>水曜</td><td>理科</td><td>社会</td><td>英語</td><td>数学</td><td>国語</td><td>体育</td></tr>
+          <tr class="hover-row"><td>木曜</td><td>英語</td><td>数学</td><td>理科</td><td>技術</td><td>美術</td><td>社会</td></tr>
+          <tr class="hover-row"><td>金曜</td><td>体育</td><td>英語</td><td>数学</td><td>国語</td><td>理科</td><td>総合</td></tr>
         </table>
       </div>
     </section>
 
-    <section id="calendar">
-      <h2>🚀 イベントスケジュール</h2>
-      <ul>
-        <li>7月 3日（木） - 【重要】学級会議システム起動</li>
-        <li>7月10日（木） - 【探索】校外学習ミッション（美術館データ収集）</li>
-        <li>7月18日（金） - 【試験】期末テスト戦闘モード（数学・英語）</li>
-        <li>7月24日（木） - 【準備】クラブ発表会システム構築</li>
-        <li>7月30日（水） - 【完了】学期終了セレモニー</li>
+    <section id="calendar" class="enhanced-section">
+      <div class="section-header">
+        <h2 class="typing-animation">🚀 イベントスケジュール</h2>
+        <div class="section-decoration">
+          <div class="decoration-line"></div>
+          <div class="decoration-dot"></div>
+        </div>
+      </div>
+      
+      <ul class="enhanced-list">
+        <li class="list-item-enhanced" data-priority="high">
+          <div class="item-icon">🔴</div>
+          <div class="item-content">
+            <span class="item-date">7月 3日（木）</span>
+            <span class="item-title">【重要】学級会議システム起動</span>
+          </div>
+          <div class="item-glow"></div>
+        </li>
+        <li class="list-item-enhanced" data-priority="medium">
+          <div class="item-icon">🟡</div>
+          <div class="item-content">
+            <span class="item-date">7月10日（木）</span>
+            <span class="item-title">【探索】校外学習ミッション（美術館データ収集）</span>
+          </div>
+          <div class="item-glow"></div>
+        </li>
+        <li class="list-item-enhanced" data-priority="high">
+          <div class="item-icon">🔴</div>
+          <div class="item-content">
+            <span class="item-date">7月18日（金）</span>
+            <span class="item-title">【試験】期末テスト戦闘モード（数学・英語）</span>
+          </div>
+          <div class="item-glow"></div>
+        </li>
+        <li class="list-item-enhanced" data-priority="low">
+          <div class="item-icon">🟢</div>
+          <div class="item-content">
+            <span class="item-date">7月24日（木）</span>
+            <span class="item-title">【準備】クラブ発表会システム構築</span>
+          </div>
+          <div class="item-glow"></div>
+        </li>
+        <li class="list-item-enhanced" data-priority="medium">
+          <div class="item-icon">🟡</div>
+          <div class="item-content">
+            <span class="item-date">7月30日（水）</span>
+            <span class="item-title">【完了】学期終了セレモニー</span>
+          </div>
+          <div class="item-glow"></div>
+        </li>
       </ul>
     </section>
 
-    <section id="news">
-      <h2>💫 緊急通信</h2>
-      <ul>
-        <li>【アラート】体育着装備を忘れずに持参してください。システムエラーの原因となります。</li>
-        <li>【データ】来週のテスト範囲はメインフレームで確認可能です。</li>
-        <li>【イベント】クラブ発表会は7月25日（金）に実行されます。応援プログラム起動中！</li>
-        <li>【更新】新しいホログラム教材が導入されました。次世代学習体験をお楽しみください。</li>
+    <section id="news" class="enhanced-section">
+      <div class="section-header">
+        <h2 class="typing-animation">💫 緊急通信</h2>
+        <div class="section-decoration">
+          <div class="decoration-line"></div>
+          <div class="decoration-dot"></div>
+        </div>
+      </div>
+      
+      <ul class="enhanced-list">
+        <li class="list-item-enhanced news-item" data-type="alert">
+          <div class="item-icon">⚠️</div>
+          <div class="item-content">
+            <span class="item-tag">[アラート]</span>
+            <span class="item-title">体育着装備を忘れずに持参してください。システムエラーの原因となります。</span>
+          </div>
+          <div class="item-glow"></div>
+        </li>
+        <li class="list-item-enhanced news-item" data-type="data">
+          <div class="item-icon">📊</div>
+          <div class="item-content">
+            <span class="item-tag">[データ]</span>
+            <span class="item-title">来週のテスト範囲はメインフレームで確認可能です。</span>
+          </div>
+          <div class="item-glow"></div>
+        </li>
+        <li class="list-item-enhanced news-item" data-type="event">
+          <div class="item-icon">🎉</div>
+          <div class="item-content">
+            <span class="item-tag">[イベント]</span>
+            <span class="item-title">クラブ発表会は7月25日（金）に実行されます。応援プログラム起動中！</span>
+          </div>
+          <div class="item-glow"></div>
+        </li>
+        <li class="list-item-enhanced news-item" data-type="update">
+          <div class="item-icon">✨</div>
+          <div class="item-content">
+            <span class="item-tag">[更新]</span>
+            <span class="item-title">新しいホログラム教材が導入されました。次世代学習体験をお楽しみください。</span>
+          </div>
+          <div class="item-glow"></div>
+        </li>
       </ul>
     </section>
+  </div>
+
+  <!-- New scroll indicator -->
+  <div class="scroll-indicator">
+    <div class="scroll-progress"></div>
   </div>
 
   <!-- Load JavaScript asynchronously to prevent render blocking -->

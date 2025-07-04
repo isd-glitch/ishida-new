@@ -357,6 +357,8 @@ class SiteManager {
     this.particleSystem = null;
     this.colorShiftId = null;
     this.ambientEffectId = null;
+    this.morphingInterval = null;
+    this.statsAnimated = false;
     
     this.init();
   }
@@ -366,10 +368,17 @@ class SiteManager {
     this.initScrollAnimations();
     this.initNavigation();
     this.initParticles();
+    this.initCustomCursor();
+    this.initScrollIndicator();
+    this.initMorphingText();
+    this.initStatsCounter();
+    this.initTypingAnimations();
+    this.initEnhancedInteractions();
     
     if (!this.optimizer.isLowPowerMode) {
       this.initColorShift();
       this.initAmbientEffects();
+      this.initFloatingElements();
     }
     
     // Clean up on page unload
@@ -478,6 +487,218 @@ class SiteManager {
     this.ambientEffectId = setInterval(addPulseEffect, 4000); // Less frequent
   }
 
+  initCustomCursor() {
+    if (this.optimizer.isLowPowerMode) return;
+
+    const cursor = document.querySelector('.cursor');
+    const cursorDot = document.querySelector('.cursor-dot');
+    
+    if (!cursor || !cursorDot) return;
+
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    let dotX = 0, dotY = 0;
+
+    // Smooth cursor following
+    const updateCursor = () => {
+      const ease = 0.15;
+      const dotEase = 0.8;
+
+      cursorX += (mouseX - cursorX) * ease;
+      cursorY += (mouseY - cursorY) * ease;
+      dotX += (mouseX - dotX) * dotEase;
+      dotY += (mouseY - dotY) * dotEase;
+
+      cursor.style.transform = `translate(${cursorX - 10}px, ${cursorY - 10}px)`;
+      cursorDot.style.transform = `translate(${dotX - 2}px, ${dotY - 2}px)`;
+
+      requestAnimationFrame(updateCursor);
+    };
+
+    updateCursor();
+
+    // Mouse move handler
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    // Hover effects
+    const hoverElements = document.querySelectorAll('a, button, .nav-item, .list-item-enhanced, .stat-item');
+    
+    hoverElements.forEach(element => {
+      element.addEventListener('mouseenter', () => {
+        cursor.classList.add('hover');
+      });
+      
+      element.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hover');
+      });
+      
+      element.addEventListener('mousedown', () => {
+        cursor.classList.add('click');
+        setTimeout(() => cursor.classList.remove('click'), 150);
+      });
+    });
+  }
+
+  initScrollIndicator() {
+    const scrollProgress = document.querySelector('.scroll-progress');
+    if (!scrollProgress) return;
+
+    const updateScrollProgress = () => {
+      const scrollTop = window.pageYOffset;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      
+      scrollProgress.style.width = scrollPercent + '%';
+    };
+
+    window.addEventListener('scroll', this.optimizer.throttle(updateScrollProgress, 10), { passive: true });
+  }
+
+  initMorphingText() {
+    const morphingText = document.querySelector('.morphing-text');
+    if (!morphingText) return;
+
+    const texts = morphingText.dataset.texts.split(',');
+    let currentIndex = 0;
+
+    const morphText = () => {
+      morphingText.classList.add('morphing');
+      
+      setTimeout(() => {
+        currentIndex = (currentIndex + 1) % texts.length;
+        morphingText.textContent = texts[currentIndex];
+      }, 400);
+      
+      setTimeout(() => {
+        morphingText.classList.remove('morphing');
+      }, 800);
+    };
+
+    // Start morphing after initial load
+    this.morphingInterval = setInterval(morphText, 4000);
+  }
+
+  initStatsCounter() {
+    const statItems = document.querySelectorAll('.stat-item');
+    if (statItems.length === 0) return;
+
+    const animateCounter = (element, target, duration = 2000) => {
+      const numberElement = element.querySelector('.stat-number');
+      const start = 0;
+      const increment = target / (duration / 16);
+      let current = start;
+
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        numberElement.textContent = Math.floor(current);
+      }, 16);
+    };
+
+    // Animate when stats come into view
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !this.statsAnimated) {
+          this.statsAnimated = true;
+          statItems.forEach((item, index) => {
+            const target = parseInt(item.dataset.target);
+            setTimeout(() => {
+              animateCounter(item, target);
+            }, index * 200);
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+
+    statItems.forEach(item => observer.observe(item));
+  }
+
+  initTypingAnimations() {
+    const typingElements = document.querySelectorAll('.typing-animation');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animation = 'typing 2s steps(20) forwards, blink 1s infinite';
+        }
+      });
+    }, { threshold: 0.8 });
+
+    typingElements.forEach(element => observer.observe(element));
+  }
+
+  initEnhancedInteractions() {
+    // Enhanced list item interactions
+    const listItems = document.querySelectorAll('.list-item-enhanced');
+    
+    listItems.forEach(item => {
+      item.addEventListener('click', () => {
+        // Create ripple effect
+        const ripple = document.createElement('div');
+        ripple.style.cssText = `
+          position: absolute;
+          border-radius: 50%;
+          background: rgba(0, 255, 255, 0.3);
+          pointer-events: none;
+          width: 0;
+          height: 0;
+          animation: ripple 0.6s ease-out;
+        `;
+        
+        const rect = item.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (rect.width / 2 - size / 2) + 'px';
+        ripple.style.top = (rect.height / 2 - size / 2) + 'px';
+        
+        item.style.position = 'relative';
+        item.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+
+    // Enhanced navigation interactions
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        if (this.particleSystem && !this.optimizer.isLowPowerMode) {
+          const rect = item.getBoundingClientRect();
+          this.particleSystem.createParticles(
+            rect.left + rect.width / 2,
+            rect.top + rect.height / 2,
+            3
+          );
+        }
+      });
+    });
+  }
+
+  initFloatingElements() {
+    const floatingElements = document.querySelectorAll('.float-element');
+    
+    floatingElements.forEach((element, index) => {
+      const speed = parseFloat(element.dataset.speed) || 1;
+      
+      // Add random starting position
+      const randomX = Math.random() * 100;
+      const randomY = Math.random() * 100;
+      
+      element.style.left = randomX + '%';
+      element.style.top = randomY + '%';
+      
+      // Add random color from palette
+      const colors = ['var(--neon)', 'var(--pink)', 'var(--accent)', 'var(--gold)'];
+      element.style.color = colors[index % colors.length];
+    });
+  }
+
   cleanup() {
     if (this.particleSystem) {
       this.particleSystem.stop();
@@ -487,6 +708,9 @@ class SiteManager {
     }
     if (this.ambientEffectId) {
       clearInterval(this.ambientEffectId);
+    }
+    if (this.morphingInterval) {
+      clearInterval(this.morphingInterval);
     }
     if (this.optimizer.rafId) {
       cancelAnimationFrame(this.optimizer.rafId);
