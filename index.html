@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>石田中学校 2年3組 - 未来型クラスルーム</title>
+  
+  <!-- Preload critical resources -->
+  <link rel="preload" href="styles.css" as="style">
+  <link rel="preload" href="app.js" as="script">
+  
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Load fonts with display=swap for better performance -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"></noscript>
+  
+  <!-- Critical CSS inline for above-the-fold content -->
+  <style>
+    /* Critical styles for initial render */
+    :root {
+      --primary: #0a0a0b;
+      --secondary: #1a1a1d;
+      --accent: #6c5ce7;
+      --neon: #00ffff;
+      --transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: linear-gradient(145deg, #000000, #0a0a0b, #1a1a1d);
+      color: white;
+      overflow-x: hidden;
+      min-height: 100vh;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+    
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(108, 92, 231, 0.2), rgba(0, 0, 0, 0.9));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: all 1s ease;
+    }
+    
+    .loading.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+  
+  <!-- Load main stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="loading" id="loading">
+    <div class="loading-text">システム起動中...</div>
+    <div class="cyber-spinner"></div>
+  </div>
+
+  <!-- Background elements - will be enhanced by JS -->
+  <div class="grid-bg"></div>
+  <div class="holo-orbs">
+    <div class="holo-orb"></div>
+    <div class="holo-orb"></div>
+    <div class="holo-orb"></div>
+  </div>
+
+  <!-- Canvas for particles - defer creation to reduce initial load -->
+  <canvas id="particle-canvas" style="display: none;"></canvas>
+
+  <nav>
+    <a href="#schedule"><span>⚡ 時間割</span></a>
+    <a href="#calendar"><span>🚀 予定表</span></a>
+    <a href="#news"><span>💫 お知らせ</span></a>
+  </nav>
+
+  <header>
+    <h1>石田中学校 2年3組</h1>
+    <p>CYBER CLASSROOM 2025</p>
+  </header>
+
+  <div class="container">
+    <section id="schedule">
+      <h2>⚡ 時間割システム</h2>
+      <div class="table-container">
+        <table>
+          <tr>
+            <th>DAY</th><th>Period 1</th><th>Period 2</th><th>Period 3</th><th>Period 4</th><th>Period 5</th><th>Period 6</th>
+          </tr>
+          <tr><td>月曜</td><td>国語</td><td>数学</td><td>英語</td><td>理科</td><td>社会</td><td>体育</td></tr>
+          <tr><td>火曜</td><td>数学</td><td>英語</td><td>国語</td><td>音楽</td><td>美術</td><td>技術</td></tr>
+          <tr><td>水曜</td><td>理科</td><td>社会</td><td>英語</td><td>数学</td><td>国語</td><td>体育</td></tr>
+          <tr><td>木曜</td><td>英語</td><td>数学</td><td>理科</td><td>技術</td><td>美術</td><td>社会</td></tr>
+          <tr><td>金曜</td><td>体育</td><td>英語</td><td>数学</td><td>国語</td><td>理科</td><td>総合</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="calendar">
+      <h2>🚀 イベントスケジュール</h2>
+      <ul>
+        <li>7月 3日（木） - 【重要】学級会議システム起動</li>
+        <li>7月10日（木） - 【探索】校外学習ミッション（美術館データ収集）</li>
+        <li>7月18日（金） - 【試験】期末テスト戦闘モード（数学・英語）</li>
+        <li>7月24日（木） - 【準備】クラブ発表会システム構築</li>
+        <li>7月30日（水） - 【完了】学期終了セレモニー</li>
+      </ul>
+    </section>
+
+    <section id="news">
+      <h2>💫 緊急通信</h2>
+      <ul>
+        <li>【アラート】体育着装備を忘れずに持参してください。システムエラーの原因となります。</li>
+        <li>【データ】来週のテスト範囲はメインフレームで確認可能です。</li>
+        <li>【イベント】クラブ発表会は7月25日（金）に実行されます。応援プログラム起動中！</li>
+        <li>【更新】新しいホログラム教材が導入されました。次世代学習体験をお楽しみください。</li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- Load JavaScript asynchronously to prevent render blocking -->
+  <script src="app.js" defer></script>
+  
+  <!-- Service Worker for caching -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {
+          // Fail silently if service worker registration fails
+        });
+      });
+    }
+  </script>
+</body>
+</html>
