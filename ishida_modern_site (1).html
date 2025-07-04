@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>石田中学校 2年3組 - 未来型クラスルーム</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0a0a0b;
+      --secondary: #1a1a1d;
+      --accent: #6c5ce7;
+      --neon: #00ffff;
+      --pink: #9900ff;
+      --navy: #3742fa;
+      --gold: #160067;
+      --glass: rgba(255, 255, 255, 0.1);
+      --glass-heavy: rgba(255, 255, 255, 0.15);
+      --shadow-neon: 0 0 30px rgba(0, 255, 255, 0.5);
+      --shadow-3d: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      --blur: blur(20px);
+      --transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: 
+        radial-gradient(circle at 15% 15%, rgba(108, 92, 231, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 85% 20%, rgba(0, 255, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(255, 0, 107, 0.15) 0%, transparent 40%),
+        linear-gradient(145deg, #000000, #0a0a0b, #1a1a1d);
+      color: white;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* 3D Background Grid */
+    .grid-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      background: 
+        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(60px, 60px); }
+    }
+
+    /* Holographic orbs */
+    .holo-orbs {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .holo-orb {
+      position: absolute;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #6c5ce7, #00ffff, #090741c4, #a600ff43, #6c5ce7);
+      filter: blur(80px);
+      animation: holoFloat 25s infinite ease-in-out;
+      opacity: 0.6;
+    }
+
+    .holo-orb:nth-child(1) {
+      width: 400px;
+      height: 400px;
+      top: 5%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+
+    .holo-orb:nth-child(2) {
+      width: 300px;
+      height: 300px;
+      top: 50%;
+      right: 10%;
+      animation-delay: -8s;
+    }
+
+    .holo-orb:nth-child(3) {
+      width: 500px;
+      height: 500px;
+      bottom: 0%;
+      left: 25%;
+      animation-delay: -16s;
+    }
+
+    @keyframes holoFloat {
+      0%, 100% { 
+        transform: translate(0, 0) scale(1) rotate(0deg); 
+        opacity: 0.3; 
+      }
+      25% { 
+        transform: translate(150px, -100px) scale(1.2) rotate(90deg); 
+        opacity: 0.6; 
+      }
+      50% { 
+        transform: translate(-80px, 80px) scale(0.8) rotate(180deg); 
+        opacity: 0.4; 
+      }
+      75% { 
+        transform: translate(100px, 150px) scale(1.1) rotate(270deg); 
+        opacity: 0.7; 
+      }
+    }
+
+    /* Advanced particle canvas */
+    #particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    /* Floating navigation with holographic effect */
+    nav {
+      position: fixed;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      backdrop-filter: blur(25px);
+      border: 2px solid transparent;
+      border-radius: 25px;
+      padding: 12px;
+      z-index: 1000;
+      box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      animation: navHover 4s ease-in-out infinite;
+    }
+
+    @keyframes navHover {
+      0%, 100% { transform: translateX(-50%) translateY(0px); }
+      50% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    nav::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: radial-gradient(circle at center, rgba(0, 255, 255, 0.6), transparent 70%);
+  border-radius: 25px;
+  z-index: -1;
+  animation: pulseGlow 2s ease-in-out infinite;
+  box-shadow:
+    0 0 30px rgba(0, 255, 255, 0.4),
+    0 0 60px rgba(255, 0, 107, 0.2),
+    0 0 90px rgba(255, 215, 0, 0.1);
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+
+    @keyframes navBorderRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    nav a {
+      color: white;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 15px 25px;
+      border-radius: 18px;
+      transition: var(--transition);
+      position: relative;
+      font-size: 0.9rem;
+      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    nav a::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--neon), var(--pink));
+      border-radius: 18px;
+      opacity: 0;
+      transition: var(--transition);
+      transform: scale(0.8);
+    }
+
+    nav a:hover::before {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    nav a:hover {
+      transform: scale(1.1) translateY(-3px);
+      box-shadow: var(--shadow-neon);
+      text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    }
+
+    nav a span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Holographic header */
+    header {
+      position: relative;
+      text-align: center;
+      padding: 120px 40px 100px;
+      background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      backdrop-filter: blur(30px);
+      border: 2px solid transparent;
+      border-radius: 0 0 60px 60px;
+      box-shadow: 
+        0 40px 80px rgba(0, 0, 0, 0.7),
+        inset 0 2px 0 rgba(255, 255, 255, 0.3);
+      z-index: 100;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: conic-gradient(from 0deg,rgba(255, 0, 0, 0));
+      border-radius: 0 0 60px 60px;
+      z-index: -1;
+      animation: headerBorderRotate 4s linear infinite;
+    }
+
+    @keyframes headerBorderRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    header h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 900;
+      background: linear-gradient(45deg, #6c5ce7, #00ffff, #ff006b, #ffd700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 300% 300%;
+      animation: textGradient 3s ease infinite, titleFloat 2s ease-out;
+      margin-bottom: 30px;
+      text-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+
+    @keyframes textGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes titleFloat {
+      0% { 
+        transform: translateY(50px) scale(0.8); 
+        opacity: 0;
+        filter: blur(20px);
+      }
+      100% { 
+        transform: translateY(0) scale(1); 
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
+    header h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--neon), transparent);
+      animation: underlineGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes underlineGlow {
+      0%, 100% { opacity: 0.5; transform: translateX(-50%) scaleX(0.5); }
+      50% { opacity: 1; transform: translateX(-50%) scaleX(1); }
+    }
+
+    header p {
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.9);
+      animation: subtitleSlide 2s ease-out 0.5s both;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    @keyframes subtitleSlide {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 0.9; }
+    }
+
+    /* Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 150px 40px 100px;
+      position: relative;
+      z-index: 20;
+    }
+
+    /* Ultra-modern sections */
+    section {
+      margin-bottom: 80px;
+      padding: 60px;
+      background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
+      backdrop-filter: blur(25px);
+      border: 2px solid transparent;
+      border-radius: 40px;
+      box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.6),
+        inset 0 2px 0 rgba(255, 255, 255, 0.25);
+      opacity: 0;
+      transform: translateY(80px) rotateX(20deg);
+      transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    section::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: conic-gradient(from 0deg, #6c5ce7, #00ffff, #ff006b, #ffd700, #6c5ce7);
+      border-radius: 40px;
+      z-index: -1;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    section:hover::before {
+      opacity: 0.3;
+      animation: sectionBorderPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes sectionBorderPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.6; }
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0) rotateX(0deg);
+    }
+
+    section:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 
+        0 50px 100px rgba(0, 0, 0, 0.8),
+        0 0 50px rgba(0, 255, 255, 0.3);
+    }
+
+    /* Holographic headings */
+    h2 {
+      font-family: 'Orbitron', monospace;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 40px;
+      background: linear-gradient(45deg, #ffffff, #00ffff, #ff006b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: h2Gradient 3s ease infinite;
+      position: relative;
+      padding-left: 40px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @keyframes h2Gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h2::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 70%;
+      background: linear-gradient(135deg, var(--neon), var(--pink));
+      border-radius: 4px;
+      box-shadow: 
+        0 0 20px var(--neon),
+        0 0 40px var(--pink);
+      animation: barPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes barPulse {
+      0%, 100% { transform: translateY(-50%) scale(1); }
+      50% { transform: translateY(-50%) scale(1.2); }
+    }
+
+    /* Cyber table */
+    .table-container {
+      overflow: hidden;
+      border-radius: 25px;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(15px);
+      border: 2px solid transparent;
+      margin-top: 40px;
+      position: relative;
+    }
+
+    .table-container::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(45deg,rgba(255, 0, 0, 0));
+      border-radius: 25px;
+      z-index: -1;
+      animation: tableBorderFlow 4s linear infinite;
+    }
+
+    @keyframes tableBorderFlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      color: white;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    th {
+      background: linear-gradient(135deg, rgba(108, 92, 231, 0.4), rgba(0, 255, 255, 0.3));
+      color: white;
+      font-weight: 700;
+      padding: 25px 20px;
+      text-align: center;
+      border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+      position: relative;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    th::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon), transparent);
+      animation: thGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes thGlow {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    td {
+      padding: 22px 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
+      position: relative;
+      font-weight: 300;
+    }
+
+    tr:hover td {
+      background: rgba(0, 255, 255, 0.1);
+      transform: scale(1.02);
+      box-shadow: 
+        inset 0 0 20px rgba(0, 255, 255, 0.3),
+        0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    tr:nth-child(even) td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Cyber list items */
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      padding: 25px 30px;
+      border-radius: 20px;
+      border: 2px solid transparent;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      font-weight: 300;
+    }
+
+    li::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(45deg, #6c5ce7, #00ffff, #ff006b, #ffd700);
+      border-radius: 20px;
+      z-index: -1;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    li::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 0;
+      background: linear-gradient(135deg, var(--neon), var(--pink));
+      border-radius: 3px;
+      transition: var(--transition);
+    }
+
+    li:hover {
+      transform: translateX(15px) scale(1.02);
+      box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(0, 255, 255, 0.3);
+    }
+
+    li:hover::before {
+      opacity: 0.3;
+    }
+
+    li:hover::after {
+      height: 60%;
+    }
+
+    /* Holographic loading */
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle, rgba(108, 92, 231, 0.2), rgba(0, 0, 0, 0.9)),
+        linear-gradient(145deg, #000000, #0a0a0b);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: all 1s ease;
+    }
+
+    .loading.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-text {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.5rem;
+      color: blue;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      animation: loadingTextGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes loadingTextGlow {
+      0%, 100% { opacity: 0.5; text-shadow: 0 0 10px var(--neon); }
+      50% { opacity: 1; text-shadow: 0 0 30px var(--neon); }
+    }
+
+    .cyber-spinner {
+      width: 80px;
+      height: 80px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-left: 4px solid var(--neon);
+      border-right: 4px solid var(--pink);
+      border-radius: 50%;
+      animation: cyberSpin 1.5s linear infinite;
+      position: relative;
+    }
+
+    .cyber-spinner::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border: 2px solid transparent;
+      border-left: 2px solid var(--gold);
+      border-radius: 50%;
+      animation: cyberSpin 1s linear infinite reverse;
+    }
+
+    @keyframes cyberSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      nav {
+        position: static;
+        transform: none;
+        margin: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      nav a {
+        padding: 12px 16px;
+        font-size: 0.8rem;
+      }
+
+      header {
+        padding: 80px 20px 60px;
+        border-radius: 0;
+      }
+
+      header h1 {
+        font-size: 2.5rem;
+      }
+
+      .container {
+        padding: 60px 20px;
+      }
+
+      section {
+        padding: 40px 25px;
+        border-radius: 25px;
+        margin-bottom: 40px;
+      }
+
+      h2 {
+        font-size: 2rem;
+        padding-left: 30px;
+      }
+
+      table, th, td {
+        font-size: 0.9rem;
+      }
+
+      th, td {
+        padding: 15px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading" id="loading">
+    <div class="loading-text">システム起動中...</div>
+    <div class="cyber-spinner"></div>
+  </div>
+
+  <div class="grid-bg"></div>
+  
+  <div class="holo-orbs">
+    <div class="holo-orb"></div>
+    <div class="holo-orb"></div>
+    <div class="holo-orb"></div>
+  </div>
+
+  <canvas id="particle-canvas"></canvas>
+
+  <nav>
+    <a href="#schedule"><span>⚡ 時間割</span></a>
+    <a href="#calendar"><span>🚀 予定表</span></a>
+    <a href="#news"><span>💫 お知らせ</span></a>
+  </nav>
+
+  <header>
+    <h1>石田中学校 2年3組</h1>
+    <p>CYBER CLASSROOM 2025</p>
+  </header>
+
+  <div class="container">
+    <section id="schedule">
+      <h2>⚡ 時間割システム</h2>
+      <div class="table-container">
+        <table>
+          <tr>
+            <th>DAY</th><th>Period 1</th><th>Period 2</th><th>Period 3</th><th>Period 4</th><th>Period 5</th><th>Period 6</th>
+          </tr>
+          <tr><td>月曜</td><td>国語</td><td>数学</td><td>英語</td><td>理科</td><td>社会</td><td>体育</td></tr>
+          <tr><td>火曜</td><td>数学</td><td>英語</td><td>国語</td><td>音楽</td><td>美術</td><td>技術</td></tr>
+          <tr><td>水曜</td><td>理科</td><td>社会</td><td>英語</td><td>数学</td><td>国語</td><td>体育</td></tr>
+          <tr><td>木曜</td><td>英語</td><td>数学</td><td>理科</td><td>技術</td><td>美術</td><td>社会</td></tr>
+          <tr><td>金曜</td><td>体育</td><td>英語</td><td>数学</td><td>国語</td><td>理科</td><td>総合</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="calendar">
+      <h2>🚀 イベントスケジュール</h2>
+      <ul>
+        <li>7月 3日（木） - 【重要】学級会議システム起動</li>
+        <li>7月10日（木） - 【探索】校外学習ミッション（美術館データ収集）</li>
+        <li>7月18日（金） - 【試験】期末テスト戦闘モード（数学・英語）</li>
+        <li>7月24日（木） - 【準備】クラブ発表会システム構築</li>
+        <li>7月30日（水） - 【完了】学期終了セレモニー</li>
+      </ul>
+    </section>
+
+    <section id="news">
+      <h2>💫 緊急通信</h2>
+      <ul>
+        <li>【アラート】体育着装備を忘れずに持参してください。システムエラーの原因となります。</li>
+        <li>【データ】来週のテスト範囲はメインフレームで確認可能です。</li>
+        <li>【イベント】クラブ発表会は7月25日（金）に実行されます。応援プログラム起動中！</li>
+        <li>【更新】新しいホログラム教材が導入されました。次世代学習体験をお楽しみください。</li>
+      </ul>
+    </section>
+  </div>
+
+  <script>
+    // Enhanced loading screen
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loading').classList.add('fade-out');
+      }, 2000);
+    });
+
+    // Advanced scroll animations with 3D effects
+    const sections = document.querySelectorAll('section');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, index * 300);
+        }
+      });
+    }, { 
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    });
+    
+    sections.forEach(section => observer.observe(section));
+
+    // Ultra-advanced particle system
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+
+    let particles = [];
+    let connectionLines = [];
+    let mouse = { x: 0, y: 0 };
+    let mouseTrail = [];
+
+    class CyberParticle {
+      constructor(x, y, type = 'normal') {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 4;
+        this.vy = (Math.random() - 0.5) * 4;
+        this.size = Math.random() * 4 + 2;
+        this.life = 1;
+        this.decay = Math.random() * 0.02 + 0.005;
+        this.hue = Math.random() * 360;
+        this.type = type;
+        this.pulse = Math.random() * Math.PI * 2;
+        this.connections = [];
+      }
+      
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.life -= this.decay;
+        this.pulse += 0.1;
+        
+        // Boundary bounce
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -0.8;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -0.8;
+        
+        // Gravity towards mouse
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 150) {
+          this.vx += dx * 0.00005;
+          this.vy += dy * 0.00005;
+        }
+      }
+      
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.life;
+        
+        // Main particle
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+        const pulseFactor = Math.sin(this.pulse) * 0.5 + 0.5;
+        gradient.addColorStop(0, `hsla(${this.hue + 180}, 100%, 80%, ${pulseFactor})`);
+        gradient.addColorStop(0.5, `hsla(${this.hue}, 100%, 60%, ${pulseFactor * 0.8})`);
+        gradient.addColorStop(1, `hsla(${this.hue}, 100%, 40%, 0)`);
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size * (1 + pulseFactor * 0.3), 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Outer glow
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = `hsl(${this.hue}, 100%, 50%)`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size * 0.5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.restore();
+      }
+    }
+
+    class ConnectionLine {
+      constructor(p1, p2) {
+        this.p1 = p1;
+        this.p2 = p2;
+        this.opacity = 0.3;
+      }
+      
+      draw() {
+        const dx = this.p2.x - this.p1.x;
+        const dy = this.p2.y - this.p1.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < 120) {
+          ctx.save();
+          ctx.globalAlpha = (120 - distance) / 120 * this.opacity;
+          
+          const gradient = ctx.createLinearGradient(this.p1.x, this.p1.y, this.p2.x, this.p2.y);
+          gradient.addColorStop(0, `hsl(${this.p1.hue}, 100%, 50%)`);
+          gradient.addColorStop(1, `hsl(${this.p2.hue}, 100%, 50%)`);
+          
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(this.p1.x, this.p1.y);
+          ctx.lineTo(this.p2.x, this.p2.y);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    }
+
+    function createParticles(x, y, count = 5, type = 'normal') {
+      for (let i = 0; i < count; i++) {
+        particles.push(new CyberParticle(
+          x + (Math.random() - 0.5) * 30,
+          y + (Math.random() - 0.5) * 30,
+          type
+        ));
+      }
+    }
+
+    function updateConnections() {
+      connectionLines = [];
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[j].x - particles[i].x;
+          const dy = particles[j].y - particles[i].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < 120) {
+            connectionLines.push(new ConnectionLine(particles[i], particles[j]));
+          }
+        }
+      }
+    }
+
+    function animate() {
+      // Create trailing effect
+      ctx.fillStyle = 'rgba(10, 10, 11, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Update and draw particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].draw();
+        
+        if (particles[i].life <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+      
+      // Update and draw connections
+      if (particles.length > 1) {
+        updateConnections();
+        connectionLines.forEach(line => line.draw());
+      }
+      
+      // Draw mouse trail
+      if (mouseTrail.length > 1) {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(0, 255, 255, 0.3)';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(mouseTrail[0].x, mouseTrail[0].y);
+        for (let i = 1; i < mouseTrail.length; i++) {
+          ctx.lineTo(mouseTrail[i].x, mouseTrail[i].y);
+        }
+        ctx.stroke();
+        ctx.restore();
+      }
+      
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Enhanced mouse interaction
+    let lastMouseMove = 0;
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      
+      // Add to trail
+      mouseTrail.push({x: mouse.x, y: mouse.y});
+      if (mouseTrail.length > 20) mouseTrail.shift();
+      
+      const now = Date.now();
+      if (now - lastMouseMove > 30) {
+        createParticles(mouse.x, mouse.y, 3, 'mouse');
+        lastMouseMove = now;
+      }
+    });
+
+    // Touch support with enhanced effects
+    window.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      mouse.x = touch.clientX;
+      mouse.y = touch.clientY;
+      createParticles(touch.clientX, touch.clientY, 8, 'touch');
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      mouse.x = touch.clientX;
+      mouse.y = touch.clientY;
+      createParticles(touch.clientX, touch.clientY, 5, 'touch');
+    });
+
+    // Resize handler
+    window.addEventListener('resize', resizeCanvas);
+
+    // Smooth scrolling with enhanced effects
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          // Create burst effect
+          createParticles(window.innerWidth / 2, window.innerHeight / 2, 15, 'click');
+          
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Automatic particle generation
+    setInterval(() => {
+      if (particles.length < 150) {
+        // Create particles from edges
+        const edge = Math.random();
+        let x, y;
+        
+        if (edge < 0.25) { // Top
+          x = Math.random() * canvas.width;
+          y = 0;
+        } else if (edge < 0.5) { // Right
+          x = canvas.width;
+          y = Math.random() * canvas.height;
+        } else if (edge < 0.75) { // Bottom
+          x = Math.random() * canvas.width;
+          y = canvas.height;
+        } else { // Left
+          x = 0;
+          y = Math.random() * canvas.height;
+        }
+        
+        createParticles(x, y, 2, 'ambient');
+      }
+    }, 1500);
+
+    // Section click effects
+    document.querySelectorAll('section').forEach(section => {
+      section.addEventListener('click', (e) => {
+        const rect = section.getBoundingClientRect();
+        createParticles(
+          rect.left + rect.width / 2, 
+          rect.top + rect.height / 2, 
+          10, 
+          'section'
+        );
+      });
+    });
+
+    // Keyboard shortcuts for cool effects
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        // Create explosion effect
+        for (let i = 0; i < 50; i++) {
+          createParticles(
+            Math.random() * canvas.width,
+            Math.random() * canvas.height,
+            1,
+            'explosion'
+          );
+        }
+      }
+    });
+
+    // Dynamic background color shift
+    let colorShift = 0;
+    setInterval(() => {
+      colorShift += 1;
+      document.documentElement.style.setProperty('--accent', `hsl(${260 + colorShift % 60}, 70%, 60%)`);
+      document.documentElement.style.setProperty('--neon', `hsl(${180 + colorShift % 60}, 100%, 50%)`);
+    }, 100);
+
+    // Add some random ambient effects
+    setInterval(() => {
+      const elements = document.querySelectorAll('h2, nav a, li');
+      const randomElement = elements[Math.floor(Math.random() * elements.length)];
+      
+      randomElement.style.animation = 'none';
+      randomElement.offsetHeight; // Trigger reflow
+      randomElement.style.animation = 'pulse 0.5s ease-in-out';
+      
+      setTimeout(() => {
+        randomElement.style.animation = '';
+      }, 500);
+    }, 3000);
+
+    // CSS for pulse animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); filter: brightness(1.2); }
+        100% { transform: scale(1); }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
